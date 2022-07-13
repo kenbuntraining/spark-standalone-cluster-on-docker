@@ -1,5 +1,5 @@
 FROM base
-LABEL manteiner="Andre Perez <andre.marcos.perez@gmail.com>"
+LABEL maintainer="Thomas Mann <thomas.mann@kenbun.de>"
 
 # -- Layer: Image Metadata
 
@@ -8,7 +8,7 @@ ARG build_date
 LABEL org.label-schema.build-date=${build_date}
 LABEL org.label-schema.name="Apache Spark Standalone Cluster on Docker - JupyterLab Image"
 LABEL org.label-schema.description="JupyterLab image"
-LABEL org.label-schema.url="https://github.com/andre-marcos-perez/spark-cluster-on-docker"
+LABEL org.label-schema.url="https://github.com/kenbuntraining/spark-cluster-on-docker"
 LABEL org.label-schema.schema-version="1.0"
 
 # -- Layer: Notebooks and data

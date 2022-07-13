@@ -1,7 +1,10 @@
+imagerepository: "docker-hub.kenbun.de/kenbuntraining"
 applications:
-  spark: "3.0.0"
-  jupyterlab: "3.0.0"
+  spark: "3.3.0"
+  jupyterlab: "3.4.3"
 build:
   build_base: "true"
   build_spark: "true"
   build_jupyterlab: "true"
+tag: "true"
+push: "true"

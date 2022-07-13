@@ -1,9 +1,5 @@
 # Apache Spark Standalone Cluster on Docker
 
-> The project was featured on an **[article](https://www.mongodb.com/blog/post/getting-started-with-mongodb-pyspark-and-jupyter-notebook)** at **MongoDB** official tech blog! :scream:
-
-> The project just got its own **[article](https://towardsdatascience.com/apache-spark-cluster-on-docker-ft-a-juyterlab-interface-418383c95445)** at **Towards Data Science** Medium blog! :sparkles:
-
 ## Introduction
 
 This project gives you an **Apache Spark** cluster in standalone mode with a **JupyterLab** interface built on top of **Docker**.
@@ -11,20 +7,9 @@ Learn Apache Spark through its **Scala**, **Python** (PySpark) and **R** (SparkR
 
 <p align="center"><img src="docs/image/cluster-architecture.png"></p>
 
-![build-master](https://github.com/cluster-apps-on-docker/spark-standalone-cluster-on-docker/workflows/build-master/badge.svg)
-![sponsor](https://img.shields.io/badge/patreon-sponsor-ff69b4)
-![jupyterlab-latest-version](https://img.shields.io/docker/v/andreper/jupyterlab/3.0.0-spark-3.0.0?color=yellow&label=jupyterlab-latest)
-![spark-latest-version](https://img.shields.io/docker/v/andreper/spark-master/3.0.0?color=yellow&label=spark-latest)
 ![spark-scala-api](https://img.shields.io/badge/spark%20api-scala-red)
 ![spark-pyspark-api](https://img.shields.io/badge/spark%20api-pyspark-red)
 ![spark-sparkr-api](https://img.shields.io/badge/spark%20api-sparkr-red)
-
-## TL;DR
-
-```bash
-curl -LO https://raw.githubusercontent.com/cluster-apps-on-docker/spark-standalone-cluster-on-docker/master/docker-compose.yml
-docker-compose up
-```
 
 ## Contents
 
@@ -56,23 +41,43 @@ docker-compose up
 1. Download the [docker compose](docker-compose.yml) file;
 
 ```bash
-curl -LO https://raw.githubusercontent.com/cluster-apps-on-docker/spark-standalone-cluster-on-docker/master/docker-compose.yml
+curl -LO https://github.com/kenbuntraining/spark-standalone-cluster-on-docker/blob/master/docker-compose.yml
 ```
 
 2. Edit the [docker compose](docker-compose.yml) file with your favorite tech stack version, check **apps** [supported versions](#tech-stack);
 3. Start the cluster;
 
 ```bash
+# Foreground
 docker-compose up
 ```
 
+```bash
+# Background (demonized)
+docker-compose up -d
+```
+
 4. Run Apache Spark code using the provided Jupyter [notebooks](build/workspace/) with Scala, PySpark and SparkR examples;
-5. Stop the cluster by typing `ctrl+c` on the terminal;
+5. Stop the cluster
+
+```bash
+# Foreground
+by typing `ctrl+c` on the terminal;
+```
+
+```bash
+# Background (demonized)
+docker-compose stop
+
+# If you want to remove containers (with all local data and volumes)
+docker-compose down -v
+```
+
 6. Run step 3 to restart the cluster.
 
 ### Build from your local machine
 
-> **Note**: Local build is currently only supported on Linux OS distributions.
+> **Note**: Local build is currently only supported on Linux OS and MacOS distributions.
 
 1. Download the source code or clone the repository;
 2. Move to the build directory;
@@ -119,30 +124,8 @@ docker-compose up
 
 | Component      | Version                 | Docker Tag                                           |
 | -------------- | ----------------------- | ---------------------------------------------------- |
-| Apache Spark   | 2.4.0 \| 2.4.4 \| 3.0.0 | **\<spark-version>**                                 |
-| JupyterLab     | 2.1.4 \| 3.0.0          | **\<jupyterlab-version>**-spark-**\<spark-version>** |
-
-## <a name="metrics"></a>Metrics
-
-| Image                                                          | Size                                                                                           | Downloads                                                                 |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [JupyterLab](https://hub.docker.com/r/andreper/jupyterlab)     | ![docker-size-jupyterlab](https://img.shields.io/docker/image-size/andreper/jupyterlab/latest) | ![docker-pull](https://img.shields.io/docker/pulls/andreper/jupyterlab)   |
-| [Spark Master](https://hub.docker.com/r/andreper/spark-master) | ![docker-size-master](https://img.shields.io/docker/image-size/andreper/spark-master/latest)   | ![docker-pull](https://img.shields.io/docker/pulls/andreper/spark-master) |
-| [Spark Worker](https://hub.docker.com/r/andreper/spark-worker) | ![docker-size-worker](https://img.shields.io/docker/image-size/andreper/spark-worker/latest)   | ![docker-pull](https://img.shields.io/docker/pulls/andreper/spark-worker) |
-
+| Apache Spark   | 3.3.0                   | **\<spark-version>**                                 |
+| JupyterLab     | 3.4.3                   | **\<jupyterlab-version>**-spark-**\<spark-version>** |
 ## <a name="contributing"></a>Contributing
 
-We'd love some help. To contribute, please read [this file](CONTRIBUTING.md).
-
-## <a name="contributors"></a>Contributors
-
-A list of amazing people that somehow contributed to the project can be found in [this file](CONTRIBUTORS.md). This 
-project is maintained by:
-
-> **André Perez** - [dekoperez](https://twitter.com/dekoperez) - andre.marcos.perez@gmail.com
-
-## <a name="support"></a>Support
-
-> Support us on GitHub by staring this project :star:
-
-> Support us on [Patreon](https://www.patreon.com/andreperez). :sparkling_heart:
+To contribute, please read [this file](CONTRIBUTING.md).

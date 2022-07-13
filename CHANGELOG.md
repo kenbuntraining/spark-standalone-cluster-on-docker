@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.0 (https://github.com/kenbuntraining/spark-standalone-cluster-on-docker/
+
+Forked/Moved/Updated
+for KENBUN IT AG
+Training purposes
+
+Added MacOS Build support
+
+Added Spark 3.3.0
+Added JupyterHub 3.4.3
+
 ## [1.2.3](https://github.com/andre-marcos-perez/spark-standalone-cluster-on-docker/releases/tag/v1.2.3) (2020-12-31)
 
 ### Core
