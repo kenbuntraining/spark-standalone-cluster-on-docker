@@ -17,8 +17,6 @@ Learn Apache Spark through its **Scala**, **Python** (PySpark) and **R** (SparkR
 - [Tech Stack](#tech-stack)
 - [Metrics](#metrics)
 - [Contributing](#contributing)
-- [Contributors](#contributors)
-- [Support](#support)
 
 ## <a name="quick-start"></a>Quick Start
 
