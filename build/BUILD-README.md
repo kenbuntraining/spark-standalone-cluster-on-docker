@@ -38,7 +38,7 @@ https://hub.docker.com/r/almondsh/almond/tags
 
 select based on SCALA Version inferred from SPARK Version
 
-there is specific tags for SCALA Versions
+there are specific tags for SCALA Versions, check for their existance but use base version
 
 Reference:
 
@@ -46,4 +46,4 @@ https://github.com/almond-sh/almond
 
 => UPDATE in BUILD.SH
 
-SCALA_JUPYTERLAB_KERNEL_VERSION="0.13.0-scala-2.12.15"
+SCALA_JUPYTERLAB_KERNEL_VERSION="0.13.0"
