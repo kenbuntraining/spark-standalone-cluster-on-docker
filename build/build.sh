@@ -35,17 +35,17 @@ if [[ "${SPARK_VERSION_MAJOR}" == "2" ]]
 then
   HADOOP_VERSION="2.7"
   SCALA_VERSION="2.11.12"
-  SCALA_KERNEL_VERSION="0.6.0"
+  SCALA_JUPYTERLAB_KERNEL_VERSION="0.6.0"
 elif [[ "${SPARK_VERSION_MAJOR}"  == "3" ]]
 then
   HADOOP_VERSION="3.2"
   SCALA_VERSION="2.12.10"
-  SCALA_KERNEL_VERSION="0.10.9"
+  SCALA_JUPYTERLAB_KERNEL_VERSION="0.10.9"
   if [[ "${SPARK_VERSION}" == "3.3.0" ]]
   then
     HADOOP_VERSION="3"
-    SCALA_VERSION="2.12.10"
-    SCALA_KERNEL_VERSION="0.10.9"
+    SCALA_VERSION="2.12.15"
+    SCALA_JUPYTERLAB_KERNEL_VERSION="0.13.0-scala-2.12.15"
   fi
 else
   exit 1
@@ -150,7 +150,7 @@ function buildImages() {
       --build-arg scala_version="${SCALA_VERSION}" \
       --build-arg spark_version="${SPARK_VERSION}" \
       --build-arg jupyterlab_version="${JUPYTERLAB_VERSION}" \
-      --build-arg scala_kernel_version="${SCALA_KERNEL_VERSION}" \
+      --build-arg scala_kernel_version="${SCALA_JUPYTERLAB_KERNEL_VERSION}" \
       -f docker/jupyterlab/Dockerfile \
       -t jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION} .
   fi
