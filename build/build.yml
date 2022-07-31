@@ -2,6 +2,7 @@ imagerepository: "docker-hub.kenbun.de/kenbuntraining"
 applications:
   spark: "3.3.0"
   jupyterlab: "3.4.3"
+  postgresql: "42.4.0"
 build:
   build_base: "true"
   build_spark: "true"

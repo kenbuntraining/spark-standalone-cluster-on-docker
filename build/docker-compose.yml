@@ -44,4 +44,11 @@ services:
       - shared-workspace:/opt/workspace
     depends_on:
       - spark-master
+  docker-postgres-world-db:
+    image: docker-hub.kenbun.de/kenbuntraining/docker-postgres-world-db:latest
+    container_name: docker-postgres-world-db
+    ports:
+      - 5432:5432
+    depends_on:
+      - spark-master
 ...

@@ -20,6 +20,7 @@ ADD workspace/ ${SHARED_WORKSPACE}/
 ARG spark_version
 ARG jupyterlab_version
 ARG scala_kernel_version
+ARG postgres_version
 
 RUN apt-get update -y && \
     apt-get install -y python3-pip python3-dev && \
@@ -44,6 +45,9 @@ RUN apt-get install -y r-base-dev && \
     curl https://archive.apache.org/dist/spark/spark-${spark_version}/SparkR_${spark_version}.tar.gz -k -o sparkr.tar.gz && \
     R CMD INSTALL sparkr.tar.gz && \
     rm -f sparkr.tar.gz
+
+RUN curl https://jdbc.postgresql.org/download/postgresql-${postgres_version}.jar -o postgresql-${postgres_version}.jar && \
+    mv postgresql-${postgres_version}.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
 
 # -- Runtime
 

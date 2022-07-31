@@ -29,6 +29,8 @@ IMAGE_REPOSITORY="$(grep -m 1 imagerepository build.yml | ${GNU_GREP_TOOL} -o -P
 SPARK_VERSION="$(grep -m 1 spark build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
 JUPYTERLAB_VERSION="$(grep -m 1 jupyterlab build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
 
+POSTGRESQL_VERSION="$(grep -m 1 postgresql build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
+
 SPARK_VERSION_MAJOR=${SPARK_VERSION:0:1}
 
 if [[ "${SPARK_VERSION_MAJOR}" == "2" ]]
@@ -126,6 +128,7 @@ function buildImages() {
       --build-arg build_date="${BUILD_DATE}" \
       --build-arg spark_version="${SPARK_VERSION}" \
       --build-arg hadoop_version="${HADOOP_VERSION}" \
+      --build-arg postgres_version="${POSTGRESQL_VERSION}" \
       -f docker/spark-base/Dockerfile \
       -t spark-base:${SPARK_VERSION} .
 
@@ -151,6 +154,7 @@ function buildImages() {
       --build-arg spark_version="${SPARK_VERSION}" \
       --build-arg jupyterlab_version="${JUPYTERLAB_VERSION}" \
       --build-arg scala_kernel_version="${SCALA_JUPYTERLAB_KERNEL_VERSION}" \
+      --build-arg postgres_version="${POSTGRESQL_VERSION}" \
       -f docker/jupyterlab/Dockerfile \
       -t jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION} .
   fi

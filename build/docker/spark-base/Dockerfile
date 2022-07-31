@@ -15,6 +15,7 @@ LABEL org.label-schema.schema-version="1.0"
 
 ARG spark_version
 ARG hadoop_version
+ARG postgres_version
 
 RUN curl https://archive.apache.org/dist/spark/spark-${spark_version}/spark-${spark_version}-bin-hadoop${hadoop_version}.tgz -o spark.tgz && \
     tar -xf spark.tgz && \
@@ -23,6 +24,9 @@ RUN curl https://archive.apache.org/dist/spark/spark-${spark_version}/spark-${sp
     echo "alias spark-shell=/usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/bin/spark-shell" >> ~/.bashrc && \
     mkdir /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/logs && \
     rm spark.tgz
+
+RUN curl https://jdbc.postgresql.org/download/postgresql-${postgres_version}.jar -o postgresql-${postgres_version}.jar && \
+    mv postgresql-${postgres_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
 
 ENV SPARK_HOME /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}
 ENV SPARK_MASTER_HOST spark-master
