@@ -75,6 +75,10 @@ function cleanContainers() {
     docker stop "${container}"
     docker rm "${container}"
 
+    container="$(docker ps -a | grep 'spark-client' | awk '{print $1}')"
+    docker stop "${container}"
+    docker rm "${container}"    
+
     container="$(docker ps -a | grep 'spark-base' | awk '{print $1}')"
     docker stop "${container}"
     docker rm "${container}"
@@ -96,6 +100,7 @@ function cleanImages() {
     then
       docker rmi -f "$(docker images | grep -m 1 'spark-worker' | awk '{print $3}')"
       docker rmi -f "$(docker images | grep -m 1 'spark-master' | awk '{print $3}')"
+      docker rmi -f "$(docker images | grep -m 1 'spark-client' | awk '{print $3}')"
       docker rmi -f "$(docker images | grep -m 1 'spark-base' | awk '{print $3}')"
     fi
 
@@ -135,6 +140,12 @@ function buildImages() {
     docker build \
       --build-arg build_date="${BUILD_DATE}" \
       --build-arg spark_version="${SPARK_VERSION}" \
+      -f docker/spark-client/Dockerfile \
+      -t spark-client:${SPARK_VERSION} .
+
+    docker build \
+      --build-arg build_date="${BUILD_DATE}" \
+      --build-arg spark_version="${SPARK_VERSION}" \
       -f docker/spark-master/Dockerfile \
       -t spark-master:${SPARK_VERSION} .
 
@@ -167,6 +178,7 @@ function tagImages() {
   then
 
     docker tag spark-base:${SPARK_VERSION} ${IMAGE_REPOSITORY}/spark-base:${SPARK_VERSION}
+    docker tag spark-client:${SPARK_VERSION} ${IMAGE_REPOSITORY}/spark-client:${SPARK_VERSION}
     docker tag spark-master:${SPARK_VERSION} ${IMAGE_REPOSITORY}/spark-master:${SPARK_VERSION}
     docker tag spark-worker:${SPARK_VERSION} ${IMAGE_REPOSITORY}/spark-worker:${SPARK_VERSION}
 
@@ -185,6 +197,7 @@ function pushImages() {
   then
 
     docker push ${IMAGE_REPOSITORY}/spark-base:${SPARK_VERSION}
+    docker push ${IMAGE_REPOSITORY}/spark-client:${SPARK_VERSION}
     docker push ${IMAGE_REPOSITORY}/spark-master:${SPARK_VERSION}
     docker push ${IMAGE_REPOSITORY}/spark-worker:${SPARK_VERSION}
 

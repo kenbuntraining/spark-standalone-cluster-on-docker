@@ -24,7 +24,7 @@ services:
     image: docker-hub.kenbun.de/kenbuntraining/spark-worker:3.3.0
     container_name: spark-worker-1
     environment:
-      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_CORES=2
       - SPARK_WORKER_MEMORY=512m
     ports:
       - 8081:8081
@@ -36,7 +36,7 @@ services:
     image: docker-hub.kenbun.de/kenbuntraining/spark-worker:3.3.0
     container_name: spark-worker-2
     environment:
-      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_CORES=2
       - SPARK_WORKER_MEMORY=512m
     ports:
       - 8082:8081
@@ -44,12 +44,30 @@ services:
       - shared-workspace:/opt/workspace
     depends_on:
       - spark-master
-
+  spark-worker-3:
+    image: docker-hub.kenbun.de/kenbuntraining/spark-worker:3.3.0
+    container_name: spark-worker-3
+    environment:
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=512m
+    ports:
+      - 8083:8081
+    volumes:
+      - shared-workspace:/opt/workspace
+    depends_on:
+      - spark-master
   docker-postgres-world-db:
     image: docker-hub.kenbun.de/kenbuntraining/docker-postgres-world-db:latest
     container_name: docker-postgres-world-db
     ports:
       - 5432:5432
+    depends_on:
+      - spark-master
+  spark-client:
+    image: docker-hub.kenbun.de/kenbuntraining/spark-client:3.3.0
+    container_name: spark-client
+    volumes:
+      - shared-workspace:/opt/workspace    
     depends_on:
       - spark-master
 ...
