@@ -66,6 +66,8 @@ services:
   spark-client:
     image: docker-hub.kenbun.de/kenbuntraining/spark-client:3.3.0
     container_name: spark-client
+    ports:
+      - 8040:4040    
     volumes:
       - shared-workspace:/opt/workspace    
     depends_on:
