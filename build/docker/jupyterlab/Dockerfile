@@ -49,6 +49,8 @@ RUN apt-get install -y r-base-dev && \
 RUN curl https://jdbc.postgresql.org/download/postgresql-${postgres_version}.jar -o postgresql-${postgres_version}.jar && \
     mv postgresql-${postgres_version}.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
 
+COPY metrics.training.properties /usr/training/metrics.training.properties
+
 # -- Runtime
 
 EXPOSE 8888

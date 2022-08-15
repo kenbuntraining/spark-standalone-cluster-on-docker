@@ -20,6 +20,7 @@ BUILD_DATE="$(date -u +'%Y-%m-%d')"
 SHOULD_BUILD_BASE="$(grep -m 1 build_base build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
 SHOULD_BUILD_SPARK="$(grep -m 1 build_spark build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
 SHOULD_BUILD_JUPYTERLAB="$(grep -m 1 build_jupyter build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
+SHOULD_BUILD_DASHBOARD="$(grep -m 1 build_spark_dashboard build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
 
 SHOULD_TAG="$(grep -m 1 tag build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
 SHOULD_PUSH="$(grep -m 1 push build.yml | ${GNU_GREP_TOOL} -o -P '(?<=").*(?=")')"
@@ -83,6 +84,10 @@ function cleanContainers() {
     docker stop "${container}"
     docker rm "${container}"
 
+    container="$(docker ps -a | grep 'spark-dashboard' | awk '{print $1}')"
+    docker stop "${container}"
+    docker rm "${container}"    
+
     container="$(docker ps -a | grep 'base' | awk '{print $1}')"
     docker stop "${container}"
     docker rm "${container}"
@@ -90,6 +95,11 @@ function cleanContainers() {
 }
 
 function cleanImages() {
+
+    if [[ "${SHOULD_BUILD_DASHBOARD}" == "true" ]]
+    then
+      docker rmi -f "$(docker images | grep -m 1 'spark-dashboard' | awk '{print $3}')"
+    fi
 
     if [[ "${SHOULD_BUILD_JUPYTERLAB}" == "true" ]]
     then
@@ -123,7 +133,8 @@ function buildImages() {
       --build-arg build_date="${BUILD_DATE}" \
       --build-arg scala_version="${SCALA_VERSION}" \
       -f docker/base/Dockerfile \
-      -t base:latest .
+      -t base:latest \
+      .
   fi
 
   if [[ "${SHOULD_BUILD_SPARK}" == "true" ]]
@@ -135,13 +146,15 @@ function buildImages() {
       --build-arg hadoop_version="${HADOOP_VERSION}" \
       --build-arg postgres_version="${POSTGRESQL_VERSION}" \
       -f docker/spark-base/Dockerfile \
-      -t spark-base:${SPARK_VERSION} .
+      -t spark-base:${SPARK_VERSION} \
+      ./docker/spark-base/.
 
     docker build \
       --build-arg build_date="${BUILD_DATE}" \
       --build-arg spark_version="${SPARK_VERSION}" \
       -f docker/spark-client/Dockerfile \
-      -t spark-client:${SPARK_VERSION} .
+      -t spark-client:${SPARK_VERSION} \
+      .
 
     docker build \
       --build-arg build_date="${BUILD_DATE}" \
@@ -153,7 +166,8 @@ function buildImages() {
       --build-arg build_date="${BUILD_DATE}" \
       --build-arg spark_version="${SPARK_VERSION}" \
       -f docker/spark-worker/Dockerfile \
-      -t spark-worker:${SPARK_VERSION} .
+      -t spark-worker:${SPARK_VERSION} \
+      .
 
   fi
 
@@ -167,7 +181,17 @@ function buildImages() {
       --build-arg scala_kernel_version="${SCALA_JUPYTERLAB_KERNEL_VERSION}" \
       --build-arg postgres_version="${POSTGRESQL_VERSION}" \
       -f docker/jupyterlab/Dockerfile \
-      -t jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION} .
+      -t jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION} \
+      ./docker/jupyterlab/.
+  fi
+
+  if [[ "${SHOULD_BUILD_DASHBOARD}" == "true" ]]
+  then
+    docker build \
+      --build-arg build_date="${BUILD_DATE}" \
+      -f docker/spark-dashboard/Dockerfile \
+      -t spark-dashboard:latest \
+      ./docker/spark-dashboard/.
   fi
 
 }
@@ -189,6 +213,11 @@ function tagImages() {
     docker tag jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION} ${IMAGE_REPOSITORY}/jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION}
   fi
 
+  if [[ "${SHOULD_BUILD_DASHBOARD}" == "true" ]]
+  then
+    docker tag spark-dashboard:latest ${IMAGE_REPOSITORY}/spark-dashboard:latest
+  fi  
+
 }
 
 function pushImages() {
@@ -206,6 +235,11 @@ function pushImages() {
   if [[ "${SHOULD_BUILD_JUPYTERLAB}" == "true" ]]
   then
     docker push ${IMAGE_REPOSITORY}/jupyterlab:${JUPYTERLAB_VERSION}-spark-${SPARK_VERSION}
+  fi
+
+  if [[ "${SHOULD_BUILD_DASHBOARD}" == "true" ]]
+  then
+    docker push ${IMAGE_REPOSITORY}/spark-dashboard:latest
   fi
 
 }

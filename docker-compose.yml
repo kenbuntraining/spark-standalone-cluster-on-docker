@@ -72,4 +72,15 @@ services:
       - shared-workspace:/opt/workspace    
     depends_on:
       - spark-master
+  spark-dashboard:
+    image: docker-hub.kenbun.de/kenbuntraining/spark-dashboard:latest
+    container_name: spark-dashboard
+    ports:
+      - 2003:2003
+      - 8086:8086
+      - 3000:3000
+    volumes:
+      - shared-workspace:/opt/workspace    
+    depends_on:
+      - spark-master
 ...

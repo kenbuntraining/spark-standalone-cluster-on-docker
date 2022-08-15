@@ -61,13 +61,26 @@ services:
     container_name: docker-postgres-world-db
     ports:
       - 5432:5432
+    volumes:
+      - shared-workspace:/opt/workspace 
     depends_on:
       - spark-master
   spark-client:
-    image: docker-hub.kenbun.de/kenbuntraining/spark-client:3.3.0
+    image: spark-client:3.3.0
     container_name: spark-client
     ports:
       - 8040:4040
+    volumes:
+      - shared-workspace:/opt/workspace    
+    depends_on:
+      - spark-master
+  spark-dashboard:
+    image: spark-dashboard:latest
+    container_name: spark-dashboard
+    ports:
+      - 2003:2003
+      - 8086:8086
+      - 3000:3000
     volumes:
       - shared-workspace:/opt/workspace    
     depends_on:

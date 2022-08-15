@@ -33,6 +33,8 @@ ENV SPARK_MASTER_HOST spark-master
 ENV SPARK_MASTER_PORT 7077
 ENV PYSPARK_PYTHON python3
 
+COPY metrics.training.properties /usr/training/metrics.training.properties
+
 # -- Runtime
 
 WORKDIR ${SPARK_HOME}

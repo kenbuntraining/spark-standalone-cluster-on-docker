@@ -7,7 +7,7 @@ LABEL maintainer="Thomas Mann <thomas.mann@kenbun.de>"
 ARG build_date
 
 LABEL org.label-schema.build-date=${build_date}
-LABEL org.label-schema.name="Apache Spark Standalone Cluster on Docker - Spark Worker Image"
+LABEL org.label-schema.name="Apache Spark Standalone Cluster on Docker - Spark Client Image"
 LABEL org.label-schema.description="Spark Client Image"
 LABEL org.label-schema.url="https://github.com/kenbuntraining/spark-cluster-on-docker"
 LABEL org.label-schema.schema-version="1.0"
