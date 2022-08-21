@@ -27,6 +27,15 @@ RUN apt-get update -y && \
     pip3 install --upgrade pip && \
     pip3 install wget==3.2 pyspark==${spark_version} jupyterlab==${jupyterlab_version}
 
+# ML Layer
+RUN pip3 install numpy pandas mlflow
+
+# more ML/DL Layer
+# RUN apt-get install cmake -y
+# RUN pip3 install horovod horovod[spark]
+# RUN pip3 install tensorflow
+# RUN pip3 install torch pytorch_lightning
+
 # -- Layer: Scala kernel for Spark
 
 ARG scala_version
@@ -54,6 +63,8 @@ COPY metrics.training.properties /usr/training/metrics.training.properties
 # -- Runtime
 
 EXPOSE 8888
+EXPOSE 5000
 
 WORKDIR ${SHARED_WORKSPACE}
+
 CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=

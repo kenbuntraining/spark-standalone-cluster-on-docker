@@ -28,6 +28,19 @@ RUN curl https://archive.apache.org/dist/spark/spark-${spark_version}/spark-${sp
 RUN curl https://jdbc.postgresql.org/download/postgresql-${postgres_version}.jar -o postgresql-${postgres_version}.jar && \
     mv postgresql-${postgres_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
 
+# ML/DL Layer
+#
+# RUN apt-get update -y && \
+#     apt-get install -y python3-pip python3-dev && \
+#     pip3 install --upgrade pip
+# 
+# RUN pip3 install pyspark==${spark_version}
+# 
+# RUN apt-get install cmake -y
+# RUN pip3 install horovod horovod[spark]
+# RUN pip3 install tensorflow
+# RUN pip3 install torch pytorch_lightning
+
 ENV SPARK_HOME /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}
 ENV SPARK_MASTER_HOST spark-master
 ENV SPARK_MASTER_PORT 7077
