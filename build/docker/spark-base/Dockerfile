@@ -25,8 +25,24 @@ RUN curl https://archive.apache.org/dist/spark/spark-${spark_version}/spark-${sp
     mkdir /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/logs && \
     rm spark.tgz
 
+## Database Layer
+
 RUN curl https://jdbc.postgresql.org/download/postgresql-${postgres_version}.jar -o postgresql-${postgres_version}.jar && \
     mv postgresql-${postgres_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
+
+## Streaming / Kafka Layer
+
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/${spark_version}/spark-sql-kafka-0-10_2.12-${spark_version}.jar -o spark-sql-kafka-0-10_2.12-${spark_version}.jar && \
+    mv spark-sql-kafka-0-10_2.12-${spark_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
+
+RUN curl https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/2.8.1/kafka-clients-2.8.1.jar -o kafka-clients-2.8.1.jar && \
+    mv kafka-clients-2.8.1.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
+
+RUN curl https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar -o commons-pool2-2.11.1.jar && \
+    mv commons-pool2-2.11.1.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
+
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/${spark_version}/spark-token-provider-kafka-0-10_2.12-${spark_version}.jar -o spark-token-provider-kafka-0-10_2.12-${spark_version}.jar && \
+    mv spark-token-provider-kafka-0-10_2.12-${spark_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
 
 # ML/DL Layer
 #

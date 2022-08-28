@@ -30,6 +30,9 @@ RUN apt-get update -y && \
 # ML Layer
 RUN pip3 install numpy pandas mlflow
 
+# Streaming Tools Layer
+RUN apt-get install -y netcat
+
 # more ML/DL Layer
 # RUN apt-get install cmake -y
 # RUN pip3 install horovod horovod[spark]
@@ -55,8 +58,26 @@ RUN apt-get install -y r-base-dev && \
     R CMD INSTALL sparkr.tar.gz && \
     rm -f sparkr.tar.gz
 
+## Database Layer
+
 RUN curl https://jdbc.postgresql.org/download/postgresql-${postgres_version}.jar -o postgresql-${postgres_version}.jar && \
     mv postgresql-${postgres_version}.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
+
+## Streaming / Kafka Layer
+
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/${spark_version}/spark-sql-kafka-0-10_2.12-${spark_version}.jar -o spark-sql-kafka-0-10_2.12-${spark_version}.jar && \
+    mv spark-sql-kafka-0-10_2.12-${spark_version}.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
+
+RUN curl https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/2.8.1/kafka-clients-2.8.1.jar -o kafka-clients-2.8.1.jar && \
+    mv kafka-clients-2.8.1.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
+
+RUN curl https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar -o commons-pool2-2.11.1.jar && \
+    mv commons-pool2-2.11.1.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
+
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/${spark_version}/spark-token-provider-kafka-0-10_2.12-${spark_version}.jar -o spark-token-provider-kafka-0-10_2.12-${spark_version}.jar && \
+    mv spark-token-provider-kafka-0-10_2.12-${spark_version}.jar /usr/local/lib/python3.9/dist-packages/pyspark/jars
+
+## Metrics Layer
 
 COPY metrics.training.properties /usr/training/metrics.training.properties
 
