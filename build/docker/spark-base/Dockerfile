@@ -44,6 +44,14 @@ RUN curl https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/
 RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/${spark_version}/spark-token-provider-kafka-0-10_2.12-${spark_version}.jar -o spark-token-provider-kafka-0-10_2.12-${spark_version}.jar && \
     mv spark-token-provider-kafka-0-10_2.12-${spark_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
 
+## Avro Layer
+
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.12//${spark_version}/spark-avro_2.12-${spark_version}.jar -o spark-avro_2.12-${spark_version}.jar && \
+    mv spark-avro_2.12-${spark_version}.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
+
+#RUN curl https://repo1.maven.org/maven2/org/apache/avro/avro/1.11.1/avro-1.11.1.jar -o avro-1.11.1.jar && \
+#    mv avro-1.11.1.jar /usr/bin/spark-${spark_version}-bin-hadoop${hadoop_version}/jars
+
 # ML/DL Layer
 #
 # RUN apt-get update -y && \
